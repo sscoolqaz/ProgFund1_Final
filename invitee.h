@@ -2,6 +2,8 @@
 #include <string>
 #include <vector>
 
+namespace inv {
+
 class ParticipantClass {
 private:
   struct InviteeParams {
@@ -102,3 +104,4 @@ public:
     return "";
   }
 };
+} // namespace inv
