@@ -2,29 +2,30 @@
 #include <string>
 #include <vector>
 
-struct InviteeParams {
-  std::string iTitle = "";
-  std::string iFirst = "";
-  std::string iLast = ""; // required
-  std::string iSuffix = "";
-  std::string iSpouseTitle = "";
-  std::string iSpouseFirst = "";
-  std::string iSpouseLast = "";
-  std::vector<std::string> iChildren = {};
-  std::string iStreetAddress = ""; // required
-  std::string iCity = "";          // required
-  std::string iZipcode = "";       // required
-  std::string iInviteeType = "";
-  std::string iEventState = "";
-};
-
 class ParticipantClass {
 private:
+  struct InviteeParams {
+    std::string iTitle = "";
+    std::string iFirst = "";
+    std::string iLast = ""; // required
+    std::string iSuffix = "";
+    std::string iSpouseTitle = "";
+    std::string iSpouseFirst = "";
+    std::string iSpouseLast = "";
+    std::vector<std::string> iChildren = {};
+    std::string iStreetAddress = ""; // required
+    std::string iCity = "";          // required
+    std::string iZipcode = "";       // required
+    std::string iInviteeType = "";
+    std::string iEventState = "";
+  };
+
   InviteeParams data;
 
   bool verifyRequired(std::string last, std::string streetAddress,
                       std::string city, std::string zipcode) {
-    if (last == "" || streetAddress == "" || city == "" || zipcode == "") {
+    if (last.empty() || streetAddress.empty() || city.empty() ||
+        zipcode.empty()) {
       return false;
     }
     return true;
@@ -33,24 +34,31 @@ private:
   std::vector<std::string> verifyChildren(std::string children) {
     std::vector<std::string> realChildren = {};
 
-    if (children == "") {
-      realChildren.push_back("");
-      return realChildren;
-    }
-
+    // iterate through the string and build the childs name
     std::string childName;
     for (std::string::iterator iter = children.begin(); iter != children.end();
          ++iter) {
+      // check for delimiter
       if (*iter == ',') {
+        // check if the string is empty so we dont push bad data
+        if (childName.empty()) {
+          continue;
+        }
+
+        // adds child name to vector
         realChildren.push_back(childName);
         childName = "";
         continue;
       }
+
+      // add the char to the string
       childName += *iter;
     }
-    // remember to add the last name
-    realChildren.push_back(childName);
 
+    // remember to add the last name
+    if (!childName.empty()) {
+      realChildren.push_back(childName);
+    }
     return realChildren;
   }
 
@@ -68,7 +76,7 @@ public:
                   const std::string &uInviteeType,
                   const std::string &uEventState) {
 
-    if (verifyRequired(uLast, uStreetAddress, uCity, uZipcode) != 0) {
+    if (verifyRequired(uLast, uStreetAddress, uCity, uZipcode)) {
       return false;
     }
 
@@ -87,5 +95,10 @@ public:
     data.iEventState = uEventState;
 
     return true;
+  }
+
+  std::string getAddress() {
+    // do stuff
+    return "";
   }
 };
