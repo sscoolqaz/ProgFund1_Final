@@ -17,7 +17,8 @@ private:
     std::vector<std::string> iChildren = {};
     std::string iStreetAddress = ""; // required
     std::string iCity = "";          // required
-    std::string iZipcode = "";       // required
+    std::string iState = "";
+    std::string iZipcode = ""; // required
     std::string iInviteeType = "";
     std::string iEventState = "";
   };
@@ -25,9 +26,10 @@ private:
   InviteeParams data;
 
   bool verifyRequired(std::string last, std::string streetAddress,
-                      std::string city, std::string zipcode) {
+                      std::string city, std::string state,
+                      std::string zipcode) {
     if (last.empty() || streetAddress.empty() || city.empty() ||
-        zipcode.empty()) {
+        state.empty() || zipcode.empty()) {
       return false;
     }
     return true;
@@ -74,11 +76,12 @@ public:
                   const std::string &uSpouseLast, const std::string &uChildren,
                   const std::string &uStreetAddress, // required
                   const std::string &uCity,          // required
+                  const std::string &uState,         // required
                   const std::string &uZipcode,       // required
                   const std::string &uInviteeType,
                   const std::string &uEventState) {
 
-    if (verifyRequired(uLast, uStreetAddress, uCity, uZipcode)) {
+    if (verifyRequired(uLast, uStreetAddress, uCity, uState, uZipcode)) {
       return false;
     }
 
@@ -92,6 +95,7 @@ public:
     data.iChildren = verifyChildren(uChildren);
     data.iStreetAddress = uStreetAddress;
     data.iCity = uCity;
+    data.iState = uState;
     data.iZipcode = uZipcode;
     data.iInviteeType = uInviteeType;
     data.iEventState = uEventState;
