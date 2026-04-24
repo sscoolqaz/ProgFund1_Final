@@ -104,8 +104,44 @@ public:
   }
 
   std::string getAddress() {
-    // do stuff
-    return "";
+    int childCount = data.iChildren.size();
+
+    std::string postage;
+
+    if (data.iSpouseFirst.empty()) {
+      postage = data.iTitle + " " + data.iFirst + " " + data.iLast;
+      if (!data.iSuffix.empty())
+        postage += " " + data.iSuffix;
+
+    } else if (data.iLast == data.iSpouseLast) {
+      postage = data.iSpouseTitle + " " + data.iSpouseFirst + " and " +
+                data.iTitle + " " + data.iFirst + " " + data.iLast;
+
+    } else {
+      postage =
+          data.iSpouseTitle + " " + data.iSpouseFirst + " " + data.iSpouseLast;
+      if (!data.iSuffix.empty())
+        postage += " " + data.iSuffix;
+
+      postage += " and " + data.iTitle + " " + data.iFirst + " " + data.iLast;
+      if (!data.iSuffix.empty())
+        postage += " " + data.iSuffix;
+
+      if (childCount == 1)
+        postage += " and " + data.iChildren[0];
+      else if (childCount >= 2)
+        postage += " and Family";
+    }
+
+    if (childCount == 1)
+      postage += " and " + data.iChildren[0];
+    else if (childCount >= 2)
+      postage += " and Family";
+
+    postage += "\n" + data.iStreetAddress + "\n" + data.iCity + ", " +
+               data.iState + ". " + data.iZipcode;
+
+    return postage + "\n\n";
   }
 };
 } // namespace inv
