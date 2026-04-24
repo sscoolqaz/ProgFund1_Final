@@ -103,6 +103,25 @@ public:
     return true;
   }
 
+  int group() {
+    if (data.iInviteeType == "Immediate Family" ||
+        data.iInviteeType == "Close Friend") {
+      return (data.iEventState == data.iState) ? 0 : 2;
+
+    } else if (data.iInviteeType == "Extended Family" ||
+               data.iInviteeType == "Friend") {
+      return (data.iEventState == data.iState) ? 1 : 3;
+
+    } else if (data.iInviteeType == "Distant Relative") {
+      return 5;
+
+    } else if (data.iInviteeType == "Co-worker") {
+      return 4;
+    }
+
+    return 5;
+  }
+
   std::string getAddress() {
     int childCount = data.iChildren.size();
 
