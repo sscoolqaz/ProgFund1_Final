@@ -119,7 +119,7 @@ public:
       return 4;
     }
 
-    return 5;
+    return -1;
   }
 
   std::string getAddress() {
